@@ -1,6 +1,7 @@
 import type { Context } from "hono";
 import prisma from "../repositories/Prisma";
 import PrismaUserRepo from "../repositories/PrismaUserRepo";
+import { validator } from "hono/validator";
 
 const userRepo = new PrismaUserRepo(prisma);
 

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { validator } from 'hono/validator';
 import { th } from 'zod/locales';
 
 export default class PrismaUserRepo {
@@ -17,13 +18,6 @@ export default class PrismaUserRepo {
             catch (err) {
                 throw new Error('Failed to add user to database');
             }
-
-
-
-            
-
-
-
         }
 
 
