@@ -10,7 +10,7 @@ datasource db {
 }
 
 model User {
-  id            String      @id 
+  id            Int       @id @default(autoincrement())
   name          String
   email         String    @unique
   password      String
@@ -41,7 +41,7 @@ model Product {
 
 model Order {
   id        Int              @id @default(autoincrement())
-  userId    String
+  userId    Int
   user      User             @relation(fields: [userId], references: [id])
   productId Int
   quantity  Int
@@ -61,14 +61,14 @@ model OrderOnProduct {
 }
 
 model Session {
-  id        String   @id
+  id        Int   @id
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  userId    String
+  userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
@@ -77,10 +77,10 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    Int    @id
   accountId             String
   providerId            String
-  userId                String
+  userId                Int
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
