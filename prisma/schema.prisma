@@ -1,51 +1,109 @@
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/client"
 }
+
 datasource db {
-  provider = "postgresql" // or "cockroachdb" for CockroachDB
+  provider = "postgresql"
+  // or "cockroachdb" for CockroachDB
 }
-
-
 
 model User {
-  id        Int   @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  orders   Order[]
+  id            String      @id 
+  name          String
+  email         String    @unique
+  password      String
+  orders        Order[]
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
 }
 
-
 model Post {
-  id        Int   @id @default(autoincrement())
-  title     String
-  content   String
-  test      String
-} 
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+  test    String
+}
 
 model Product {
-  id    Int   @id @default(autoincrement())
+  id    Int              @id @default(autoincrement())
   name  String
   price Float
   order OrderOnProduct[]
 }
 
 model Order {
-  id        Int   @id @default(autoincrement())
-  userId    Int 
-  user    User   @relation(fields: [userId], references: [id])
+  id        Int              @id @default(autoincrement())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
   productId Int
   quantity  Int
   total     Float
-  products OrderOnProduct[]
+  products  OrderOnProduct[]
 }
+
 model OrderOnProduct {
-  product Product @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
   productId Int
-  Order Order @relation(fields: [orderId], references: [id])
-  orderId Int 
+  Order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int
   CreatedAt DateTime @default(now())
   CraetedBy String
+
   @@id([productId, orderId])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
