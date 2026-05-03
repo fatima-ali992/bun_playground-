@@ -4,6 +4,7 @@ import getCon from './dbconn';
 import { logger } from 'hono/logger'
 import Routes from './controllers/Routes';
 import authRouter from './auth/routes/router';
+import { apiReference } from '@scalar/hono-api-reference'
 
 const app = new Hono();
 
@@ -11,5 +12,6 @@ app.use('*', logger());
 app.basePath("/api").route('/user', Routes);
 
 app.basePath("/api").route('/auth', authRouter);
+
 
 export  default app;
