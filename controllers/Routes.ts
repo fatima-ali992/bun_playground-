@@ -5,12 +5,9 @@ import * as z from "zod";
 import { sValidator } from '@hono/standard-validator'
 import prisma from "../repositories/Prisma";
 import PrismaUserRepo from "../repositories/PrismaUserRepo";
-
+import { auth } from "../auth"
 
 const userRoutes = new Hono();
-
-
-
 
 // Debugging: here
 userRoutes.get("/test", (c) => c.text("working"));
