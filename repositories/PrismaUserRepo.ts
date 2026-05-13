@@ -11,14 +11,14 @@ export default class PrismaUserRepo {
 
     async createUser(name: string, email: string, password: string) {
 
-        try {
-            var user = await this.prismaClient.user.create({ data: { name, email, password , orders: { create: {productId: 1, quantity: 1, total: 10.0} } } })
-            return user;} 
+    //    / try {
+    //         var user = await this.prismaClient.user.create({ data: { name, email, password , orders: { create: {productId: 1, quantity: 1, total: 10.0} } } })
+    //         return user;} 
             
-            catch (err) {
-                throw new Error('Failed to add user to database');
-            }
-        }
+    //         catch (err) {
+    //             throw new Error('Failed to add user to database');
+    //         }
+     }
 
 
     async getUsers() {
