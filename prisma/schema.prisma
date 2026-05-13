@@ -10,10 +10,9 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            String       @id 
   name          String
   email         String    @unique
-  password      String
   orders        Order[]
   emailVerified Boolean   @default(false)
   image         String?
@@ -22,7 +21,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  @@map("user")
+  @@map("User")
 }
 
 model Post {
@@ -41,7 +40,7 @@ model Product {
 
 model Order {
   id        Int              @id @default(autoincrement())
-  userId    Int
+  userId    String
   user      User             @relation(fields: [userId], references: [id])
   productId Int
   quantity  Int
@@ -61,26 +60,26 @@ model OrderOnProduct {
 }
 
 model Session {
-  id        Int   @id
+  id        String   @id
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
+  @@map("Session")
 }
 
 model Account {
-  id                    Int    @id
+  id                    String    @id
   accountId             String
   providerId            String
-  userId                Int
+  userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
@@ -93,7 +92,7 @@ model Account {
   updatedAt             DateTime  @updatedAt
 
   @@index([userId])
-  @@map("account")
+  @@map("Account")
 }
 
 model Verification {
@@ -105,5 +104,5 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@index([identifier])
-  @@map("verification")
+  @@map("Verification")
 }
