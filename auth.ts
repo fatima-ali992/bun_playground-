@@ -1,7 +1,8 @@
 import { betterAuth} from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { openAPI } from 'better-auth/plugins'
-
+import { jwt } from "better-auth/plugins"
+import { bearer } from "better-auth/plugins"
 import prisma from "./repositories/Prisma";
 
 export const auth = betterAuth({
@@ -11,11 +12,15 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [
-    openAPI()
+    openAPI(),
+    bearer(), 
+    jwt()
   ],
 });
 
+
 export class AuthService {
+  
 
   static async registerUser(
     name: string,
@@ -53,6 +58,8 @@ export class AuthService {
     return session;
   }
 }
+
+
 export type AuthType = {
   user: typeof auth.$Infer.Session.user | null
   session: typeof auth.$Infer.Session.session | null
